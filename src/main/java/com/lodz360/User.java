@@ -9,16 +9,11 @@ public class User {
     private float weight;
     private float height;
 
-    public User(String name, int age, float weight, float height){
-        this.name=name;
-        this.age=age;
-       /*  if(age>120)
-       {
-            System.out.println("what's out!");
-            throw new RuntimeException("If you really have more than 120 years just enjoy your life, don't worry about your diet ;)");
-        }*/
-        this.weight=weight;
-        this.height=height/100;
+    public User(String name, int age, float weight, float height) {
+        this.name = name;
+        this.age = age;
+        this.weight = weight;
+        this.height = height / 100;
     }
 
 
@@ -26,11 +21,11 @@ public class User {
         return name + " " + " " + age + " " + weight + " " + height;
     }
 
-    public float getWeight(){
+    public float getWeight() {
         return weight;
     }
 
-    public float getHeight(){
+    public float getHeight() {
         return height;
     }
 
@@ -44,22 +39,22 @@ public class User {
 
 
     public float getBmi() {
-        return weight/(height*height);
+        return weight / (height * height);
     }
 
-    public String checkbmi() throws BMIException {
-
-        if (getBmi()>= 30) {
-            return  "You're in the obese range! You have a huge problem, you must watch your diet and start exercising";
-        }
-        else if (getBmi() >= 25 ){
+    public  String checkbmi() throws BMIException {
+        if (getBmi() > 50) {
+            throw new BMIToHighException();
+        } else if (getBmi() >= 30) {
+            return "You're in the obese range! You have a huge problem, you must watch your diet and start exercising";
+        } else if (getBmi() >= 25) {
             return "You're in the overweight range! You should watch your diet and start exercises";
-        }else if (getBmi() >= 18.5){
+        } else if (getBmi() >= 18.5) {
             return "You're in the healthy weight range. It's good to hear you're taking care of yourself";
-        }else if (getBmi() > 5){
-            return  "You're in the underweight range. You could use more good calories";
-        }else {
-            throw  new BMIException();
+        } else if (getBmi() > 5) {
+            return "You're in the underweight range. You could use more good calories";
+        } else {
+            throw new BMIToLowException();
         }
 
     }

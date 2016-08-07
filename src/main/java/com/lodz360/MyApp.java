@@ -41,12 +41,16 @@ public class MyApp {
 
             Map<String, Object> model = new HashMap();
             model.put("user", user);
-            try {
+            model.put("checkbmi", user.checkbmi());
+            /* try {
                 model.put("checkbmi", user.checkbmi());
             }
-            catch(BMIException e){
+            catch(BMIToLowException toLow){
             model.put("checkbmi","Wpisałeś głupoty, albo jesteś tak chudy, że już nic Ci nie pomoże");
             }
+            catch (BMIToHighException toHigh){
+                model.put("checkbmi","Za duże BMI");
+            }*/
             model.put("userListAsString", usersList.toString());
             return  new ModelAndView(model, "result.ftl");
         }, new FreeMarkerEngine());
