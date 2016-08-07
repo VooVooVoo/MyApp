@@ -17,6 +17,22 @@ public class MyApp {
         ArrayList<User> usersList = new ArrayList<>();
 
         Spark.staticFileLocation("/webfiles");
+        Spark.get("/breakfast", (request, response) -> {
+            String milk = request.queryParams("milk");
+            String eggs = request.queryParams("eggs");
+            String cereal = request.queryParams("cereal");
+
+            int milkgram = Integer.parseInt(milk);
+            int eggsgram = Integer.parseInt(eggs);
+            int cerealgrams = Integer.parseInt(cereal);
+
+            Breakfast breakfast = new Breakfast(milkgram, eggsgram, cerealgrams);
+
+            Map<String, Object> model = new HashMap();
+            return new ModelAndView(model, "result2.ftl");
+        }, new FreeMarkerEngine());
+
+
         Spark.get("/signin", (request, response) -> {
             String name = request.queryParams("name");
             String age = request.queryParams("age");

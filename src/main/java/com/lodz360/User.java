@@ -21,9 +21,7 @@ public class User {
         return name + " " + " " + age + " " + weight + " " + height;
     }
 
-    public float getWeight() {
-        return weight;
-    }
+    public float getWeight() {return weight;}
 
     public float getHeight() {
         return height;
@@ -42,7 +40,7 @@ public class User {
         return weight / (height * height);
     }
 
-    public  String checkbmi() throws BMIException {
+    public String checkbmi() throws BMIException {
         if (getBmi() > 50) {
             throw new BMIToHighException();
         } else if (getBmi() >= 30) {
