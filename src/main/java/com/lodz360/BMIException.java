@@ -1,13 +1,10 @@
 package com.lodz360;
 
-import com.lodz360.User;
-import com.lodz360.MyApp;
-
 /**
  * Created by michalina on 05/08/16.
  */
-public class BMIException extends Throwable {
-    public static void main(String[] args) {
+public class BMIException extends Exception {
+   /* public static void main(String[] args) {
         try {
             (user.checkbmi);
         } catch (BMIToLowException toLow) {
@@ -15,5 +12,5 @@ public class BMIException extends Throwable {
         } catch (BMIToHighException toHigh) {
             System.out.println("Za duże BMI");
         }
-    }
+    }*/
 }

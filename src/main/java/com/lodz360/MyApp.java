@@ -25,34 +25,33 @@ public class MyApp {
 
             int ageint;
             try {
-                 ageint = Integer.parseInt(age);
+                ageint = Integer.parseInt(age);
             } catch (NumberFormatException ex) {
-                 ageint = -1;
-                 response.redirect("/signin.html");
+                ageint = -1;
+                response.redirect("/signin.html");
             }
 
             float weightflo = Float.parseFloat(weight);
             float heightflo = Float.parseFloat(height);
-            User user = new User(name,ageint,weightflo,heightflo);
+            User user = new User(name, ageint, weightflo, heightflo);
 
             usersList.add(user);
-            System.out.println(usersList);
-            System.out.println(usersList.size());
+          /*  System.out.println(usersList);
+            System.out.println(usersList.size());*/
 
             Map<String, Object> model = new HashMap();
             model.put("user", user);
-            model.put("checkbmi", user.checkbmi());
-            /* try {
+            try {
                 model.put("checkbmi", user.checkbmi());
+            } catch (BMIToLowException toLow) {
+                model.put("checkbmi", "Wpisałeś głupoty, albo jesteś tak chudy, że już nic Ci nie pomoże");
+            } catch (BMIToHighException toHigh) {
+                model.put("checkbmi", "Za duże BMI");
+            } catch (BMIException e) {
+                e.printStackTrace();
             }
-            catch(BMIToLowException toLow){
-            model.put("checkbmi","Wpisałeś głupoty, albo jesteś tak chudy, że już nic Ci nie pomoże");
-            }
-            catch (BMIToHighException toHigh){
-                model.put("checkbmi","Za duże BMI");
-            }*/
             model.put("userListAsString", usersList.toString());
-            return  new ModelAndView(model, "result.ftl");
+            return new ModelAndView(model, "result.ftl");
         }, new FreeMarkerEngine());
 
 
