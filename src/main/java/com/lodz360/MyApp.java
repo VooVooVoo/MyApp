@@ -29,7 +29,10 @@ public class MyApp {
             Breakfast breakfast = new Breakfast(milkgram, eggsgram, cerealgrams);
 
             Map<String, Object> model = new HashMap();
-            return new ModelAndView(model, "result2.ftl");
+/*
+            model.put("userListAsString", );
+*/
+            return new ModelAndView (model,"result2.ftl");
         }, new FreeMarkerEngine());
 
 

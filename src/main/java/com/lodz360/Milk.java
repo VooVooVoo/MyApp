@@ -12,22 +12,10 @@ public class Milk extends Breakfast implements Calculator{
         super(milk, eggs, jogurt);
     }
 
-    public double getProtain() {
-        return protain;
-    }
 
-    public double getFat() {
-        return fat;
-    }
+    double countProtein = protain*getMilk();
 
-    public double countProtain() {
-        return protain*getMilk();
-    }
+    double countFat = fat*getMilk();
 
-    public double countFat() {
-        return fat*getMilk();
-    }
-    public String toString2() {
-        return   "Protain in your milk: " + countProtain() + "Fat in your milk: " + countFat();
-    }
+
 }
