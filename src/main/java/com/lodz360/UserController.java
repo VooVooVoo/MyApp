@@ -1,23 +1,28 @@
 package com.lodz360;
 
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by michalina on 10/08/16.
  */
 @Controller
 public class UserController {
+    List<Product> usersList = new ArrayList<>();
+    List<Product> productList = new ArrayList<>();
 
-    Product milk = new Product("Milk",3.4,3,0);
-    Product egg = new Product("Egg",13, 11, 0);
-    ArrayList<User> usersList = new ArrayList<>();
+    public UserController() {
+        productList.add(new Product("Milk",3.4,3,0));
+        productList.add(new Product("Egg",13, 11, 0));
+        productList.add(new Product("Cereal", 8, 0.4, 84));
+    }
 
-    Product cereal = new Product("Cereal", 8, 0.4, 84);
     @RequestMapping("/")
     public String form() {
         return "signin";
@@ -55,7 +60,7 @@ public class UserController {
 
 
     @RequestMapping("/breakfast")
-    public String breakfast(@RequestParam(value = "amountOfMilk"/*,required = false, defaultValue = "0"*/) Double amountOfMilk,
+    public String breakfast(@RequestParam(value = "amountOfMilk",required = false, defaultValue = "0") Double amountOfMilk,
                        @RequestParam(value = "amountOfEgg",required = false, defaultValue = "0") Double amountOfEgg,
                        @RequestParam(value = "amountOfCereal",required = false, defaultValue = "0") Double amountOfCereal, Model model) {
 
@@ -72,6 +77,16 @@ public class UserController {
 
 
 
+    }
+
+    public String getProducts(HttpServletRequest request) {
+
+        for (Product product : productList) {
+            String parameterName = "amountOf" + product.getName();
+            String amountAsString = request.getParameter(parameterName);
+        }
+
+        return "aaaaa";
     }
 
 }
