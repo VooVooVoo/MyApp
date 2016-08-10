@@ -1,6 +1,6 @@
 package com.lodz360;
 
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +14,14 @@ import java.util.List;
  */
 @Controller
 public class UserController {
-    List<Product> usersList = new ArrayList<>();
+
+    private Product product;
+
+    @Autowired
+    public UserController(Product product) {
+        this.product = product;
+    }
+    List<User> usersList = new ArrayList<>();
     List<Product> productList = new ArrayList<>();
 
     public UserController() {
@@ -64,9 +71,9 @@ public class UserController {
                        @RequestParam(value = "amountOfEgg",required = false, defaultValue = "0") Double amountOfEgg,
                        @RequestParam(value = "amountOfCereal",required = false, defaultValue = "0") Double amountOfCereal, Model model) {
 
-        double countProteinInProductYueAte = (milk.getProtain() * amountOfMilk) + (egg.getProtain() * amountOfEgg) + (cereal.getProtain() * amountOfCereal);
-        double countFatInProductYueAte = (milk.getFat() * amountOfMilk) + (egg.getFat() * amountOfEgg) + (cereal.getFat() * amountOfCereal);
-        double countCarbohydratesInProductYueAte = (milk.getCarbohydrates() * amountOfMilk) + (egg.getCarbohydrates() * amountOfEgg) + (cereal.getCarbohydrates() * amountOfCereal);
+        double countProteinInProductYueAte = (productList.get(1).getProtain() * amountOfMilk) + (productList.get(2).getProtain() * amountOfEgg) + (productList.get(3).getProtain() * amountOfCereal);
+        double countFatInProductYueAte = (productList.get(1).getFat() * amountOfMilk) + (productList.get(2).getFat() * amountOfEgg) + (productList.get(3).getFat() * amountOfCereal);
+        double countCarbohydratesInProductYueAte = (productList.get(1).getCarbohydrates() * amountOfMilk) + (productList.get(2).getCarbohydrates() * amountOfEgg) + (productList.get(3).getCarbohydrates() * amountOfCereal);
 
         model.addAttribute("countProteinInProductYueAte", countProteinInProductYueAte);
         model.addAttribute("countFatInProductYueAte", countFatInProductYueAte);
@@ -78,7 +85,7 @@ public class UserController {
 
 
     }
-
+/*
     public String getProducts(HttpServletRequest request) {
 
         for (Product product : productList) {
@@ -87,7 +94,7 @@ public class UserController {
         }
 
         return "aaaaa";
-    }
+    }*/
 
 }
 

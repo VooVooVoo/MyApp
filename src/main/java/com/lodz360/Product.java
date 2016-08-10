@@ -1,9 +1,12 @@
 package com.lodz360;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Created by michalina on 10/08/16.
  */
-public class Product {
+@Component
+public class Product implements ProductInterface {
     private String name;
     private double protain;
     private double fat;
