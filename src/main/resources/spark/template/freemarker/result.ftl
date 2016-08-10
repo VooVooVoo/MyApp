@@ -1,15 +1,16 @@
 
 
 
-<html lang="en-us">
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Balance Your Diet</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.pink-red.min.css">
-    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.pink-red.min.css"/>
+    <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
     <style>
         .mdl-layout {
             align-items: center;
@@ -31,10 +32,10 @@
             </div>
             <div class="mdl-card__supporting-text">
 
-                Protein:
+                <p th:text=" |Hello  ${user.name}|"> You </p>
+                <p th:text="|Yours BMI: ${user.bmi} ${checkbmi}|"> Singin please :) </p>
+
             </div>
-
-
 
 
         </div>
