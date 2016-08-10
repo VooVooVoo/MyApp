@@ -11,10 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyApp {
-    public static void main(String[] args) {
+public class MyAppWithSpark {
+    public static void mainSpark(String[] args) {
 
         ArrayList<User> usersList = new ArrayList<>();
+
 
         Spark.staticFileLocation("/webfiles");
         Spark.get("/breakfast", (request, response) -> {
@@ -47,7 +48,7 @@ public class MyApp {
                 ageint = Integer.parseInt(age);
             } catch (NumberFormatException ex) {
                 ageint = -1;
-                response.redirect("/signin.html");
+                response.redirect("/signin.html?error=Podales+zly+wiek");
             }
 
             float weightflo = Float.parseFloat(weight);
