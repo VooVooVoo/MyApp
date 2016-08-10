@@ -27,7 +27,7 @@ public class MyAppWithSpark {
             int eggsgram = Integer.parseInt(eggs);
             int cerealgrams = Integer.parseInt(cereal);
 
-            Breakfast breakfast = new Breakfast(milkgram, eggsgram, cerealgrams);
+          /*  Breakfast breakfast = new Breakfast(milkgram, eggsgram, cerealgrams);*/
 
             Map<String, Object> model = new HashMap();
 /*
