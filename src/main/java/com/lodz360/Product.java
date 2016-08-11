@@ -1,11 +1,10 @@
 package com.lodz360;
 
-import org.springframework.stereotype.Component;
 
 /**
  * Created by michalina on 10/08/16.
  */
-public class Product implements ProductInterface {
+public class Product  {
     private String name;
     private double protain;
     private double fat;
@@ -32,4 +31,6 @@ public class Product implements ProductInterface {
     }
 
     public String getName() {return name; }
+
+    public String toString() {return getName() + " conteins: " + getProtain() + "grams of protain " + getFat() + "grams of fat "+getCarbohydrates()+"grams of carbohydrates.";}
 }

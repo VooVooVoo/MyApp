@@ -79,16 +79,15 @@ public class UserController {
 
         }
 
-        // TODO correct spelling in attribute names
-        model.addAttribute("countProteinInProductYueAte", countProteinInProductYouAte);
-        model.addAttribute("countFatInProductYueAte", countFatInProductYouAte);
-        model.addAttribute("countCarbohydratesInProductYueAte", countCarbohydratesInProductYouAte);
+        model.addAttribute("countProteinInProductYouAte", countProteinInProductYouAte);
+        model.addAttribute("countFatInProductYouAte", countFatInProductYouAte);
+        model.addAttribute("countCarbohydratesInProductYouAte", countCarbohydratesInProductYouAte);
         return "result2";
     }
 
-    private Product getProductByName(String productName) throws NoSuchProductException {
+    /*private Product getProductByName(String productName) throws NoSuchProductException {
         return productRepository.getProductByName(productName);
-    }
+    }*/
 
 }
 
