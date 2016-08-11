@@ -17,13 +17,11 @@ import java.util.List;
 public class UserController {
 
     List<User> usersList = new ArrayList<>();
-    List<Product> productList = new ArrayList<>();
+    private ProductRepository productRepository;
 
-    public UserController() {
-        productList.add(new Product("Milk", 3.4, 3, 0));
-        productList.add(new Product("Egg", 13, 11, 0));
-        productList.add(new Product("Cereal", 8, 0.4, 84));
-        productList.add(new Product("Butter", 0.9, 81, 0.1));
+    @Autowired
+    public UserController(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     @RequestMapping("/")
@@ -57,20 +55,19 @@ public class UserController {
 
     @RequestMapping("/main")
     public String form1(Model model) {
-        model.addAttribute("products", productList);
+        model.addAttribute("products", productRepository.getAllProducts());
         return "breakfast";
     }
 
 
     @RequestMapping("/breakfast")
-    public String breakfast(HttpServletRequest request,
-                            Model model) {
+    public String breakfast(HttpServletRequest request, Model model) {
 
         double countProteinInProductYouAte = 0;
         double countFatInProductYouAte = 0;
         double countCarbohydratesInProductYouAte = 0;
 
-        for (Product product: productList) {
+        for (Product product: productRepository.getAllProducts()) {
             String parameterName = "amountOf" + product.getName();
             String parameterValue = request.getParameter(parameterName);
             if (parameterValue != null && !parameterValue.equals("")) {
@@ -90,23 +87,8 @@ public class UserController {
     }
 
     private Product getProductByName(String productName) throws NoSuchProductException {
-        for (Product product : productList) {
-            if (product.getName().equals(productName)) {
-                return product;
-            }
-        }
-        throw new NoSuchProductException();
+        return productRepository.getProductByName(productName);
     }
-/*
-    public String getProducts(HttpServletRequest request) {
-
-        for (Product product : productList) {
-            String parameterName = "amountOf" + product.getName();
-            String amountAsString = request.getParameter(parameterName);
-        }
-
-        return "aaaaa";
-    }*/
 
 }
 
