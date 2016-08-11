@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,30 +63,30 @@ public class UserController {
 
 
     @RequestMapping("/breakfast")
-    public String breakfast(@RequestParam(value = "amountOfProduct", required = false) List<Double> amountsOfProducts,
-                            @RequestParam(value = "productName", required = false) List<String> productsName,
+    public String breakfast(HttpServletRequest request,
                             Model model) {
 
         double countProteinInProductYouAte = 0;
         double countFatInProductYouAte = 0;
         double countCarbohydratesInProductYouAte = 0;
 
-        for (int i = 0; i < productsName.size(); i++) {
-            Product product = getProductByName(productsName.get(i));
-            countProteinInProductYouAte += (product.getProtain() * amountsOfProducts.get(i));
-            countFatInProductYouAte += (product.getFat() *  amountsOfProducts.get(i));
-            countCarbohydratesInProductYouAte += (product.getCarbohydrates() * amountsOfProducts.get(i));
+        for (Product product: productList) {
+            String parameterName = "amountOf" + product.getName();
+            String parameterValue = request.getParameter(parameterName);
+            if (parameterValue != null && !parameterValue.equals("")) {
+                double amountOfProduct = Double.parseDouble(parameterValue);
+                countProteinInProductYouAte += (product.getProtain() * amountOfProduct);
+                countFatInProductYouAte += (product.getFat() *  amountOfProduct);
+                countCarbohydratesInProductYouAte += (product.getCarbohydrates() * amountOfProduct);
+            }
+
         }
 
         // TODO correct spelling in attribute names
         model.addAttribute("countProteinInProductYueAte", countProteinInProductYouAte);
         model.addAttribute("countFatInProductYueAte", countFatInProductYouAte);
         model.addAttribute("countCarbohydratesInProductYueAte", countCarbohydratesInProductYouAte);
-
-
         return "result2";
-
-
     }
 
     private Product getProductByName(String productName) throws NoSuchProductException {
