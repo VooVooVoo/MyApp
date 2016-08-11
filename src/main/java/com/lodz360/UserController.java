@@ -15,19 +15,14 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    private Product product;
-
-    @Autowired
-    public UserController(Product product) {
-        this.product = product;
-    }
     List<User> usersList = new ArrayList<>();
     List<Product> productList = new ArrayList<>();
 
     public UserController() {
-        productList.add(new Product("Milk",3.4,3,0));
-        productList.add(new Product("Egg",13, 11, 0));
+        productList.add(new Product("Milk", 3.4, 3, 0));
+        productList.add(new Product("Egg", 13, 11, 0));
         productList.add(new Product("Cereal", 8, 0.4, 84));
+        productList.add(new Product("Butter", 0.9, 81, 0.1));
     }
 
     @RequestMapping("/")
@@ -36,20 +31,19 @@ public class UserController {
     }
 
 
-
     @RequestMapping("/signin")
     public String user(@RequestParam(value = "name") String name,
-                          @RequestParam(value = "age") Integer age,
-                          @RequestParam(value = "weight") Integer weight,
-                           @RequestParam(value = "height") Integer height, Model model) {
+                       @RequestParam(value = "age") Integer age,
+                       @RequestParam(value = "weight") Integer weight,
+                       @RequestParam(value = "height") Integer height, Model model) {
 
 
         User user = new User(name, age, weight, height);
         usersList.add(user);
 
         model.addAttribute("user", user);
-        try{
-        model.addAttribute("checkbmi", user.checkbmi());
+        try {
+            model.addAttribute("checkbmi", user.checkbmi());
         } catch (BMIToLowException toLow) {
             model.addAttribute("checkbmi", "Wpisałeś głupoty, albo jesteś tak chudy, że już nic Ci nie pomoże");
         } catch (BMIToHighException toHigh) {
@@ -59,31 +53,48 @@ public class UserController {
         }
         return "result";
     }
+
     @RequestMapping("/main")
-    public String form1() {
+    public String form1(Model model) {
+        model.addAttribute("products", productList);
         return "breakfast";
     }
 
 
-
     @RequestMapping("/breakfast")
-    public String breakfast(@RequestParam(value = "amountOfMilk",required = false, defaultValue = "0") Double amountOfMilk,
-                       @RequestParam(value = "amountOfEgg",required = false, defaultValue = "0") Double amountOfEgg,
-                       @RequestParam(value = "amountOfCereal",required = false, defaultValue = "0") Double amountOfCereal, Model model) {
+    public String breakfast(@RequestParam(value = "amountOfProduct", required = false) List<Double> amountsOfProducts,
+                            @RequestParam(value = "productName", required = false) List<String> productsName,
+                            Model model) {
 
-        double countProteinInProductYueAte = (productList.get(1).getProtain() * amountOfMilk) + (productList.get(2).getProtain() * amountOfEgg) + (productList.get(3).getProtain() * amountOfCereal);
-        double countFatInProductYueAte = (productList.get(1).getFat() * amountOfMilk) + (productList.get(2).getFat() * amountOfEgg) + (productList.get(3).getFat() * amountOfCereal);
-        double countCarbohydratesInProductYueAte = (productList.get(1).getCarbohydrates() * amountOfMilk) + (productList.get(2).getCarbohydrates() * amountOfEgg) + (productList.get(3).getCarbohydrates() * amountOfCereal);
+        double countProteinInProductYouAte = 0;
+        double countFatInProductYouAte = 0;
+        double countCarbohydratesInProductYouAte = 0;
 
-        model.addAttribute("countProteinInProductYueAte", countProteinInProductYueAte);
-        model.addAttribute("countFatInProductYueAte", countFatInProductYueAte);
-        model.addAttribute("countCarbohydratesInProductYueAte", countCarbohydratesInProductYueAte);
+        for (int i = 0; i < productsName.size(); i++) {
+            Product product = getProductByName(productsName.get(i));
+            countProteinInProductYouAte += (product.getProtain() * amountsOfProducts.get(i));
+            countFatInProductYouAte += (product.getFat() *  amountsOfProducts.get(i));
+            countCarbohydratesInProductYouAte += (product.getCarbohydrates() * amountsOfProducts.get(i));
+        }
+
+        // TODO correct spelling in attribute names
+        model.addAttribute("countProteinInProductYueAte", countProteinInProductYouAte);
+        model.addAttribute("countFatInProductYueAte", countFatInProductYouAte);
+        model.addAttribute("countCarbohydratesInProductYueAte", countCarbohydratesInProductYouAte);
 
 
         return "result2";
 
 
+    }
 
+    private Product getProductByName(String productName) throws NoSuchProductException {
+        for (Product product : productList) {
+            if (product.getName().equals(productName)) {
+                return product;
+            }
+        }
+        throw new NoSuchProductException();
     }
 /*
     public String getProducts(HttpServletRequest request) {

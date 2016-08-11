@@ -33,32 +33,17 @@
             <div class="mdl-card__supporting-text"><h4>What did you have for breakfast?</h4>
                 <form action="/breakfast">
 
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" name="amountOfMilk" />
-                        <label class="mdl-textfield__label" for="amountOfMilk">Milk (grams)</label>
+                    <div th:each="product : ${products}" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" name="amountOfProduct" />
+                        <label class="mdl-textfield__label" for="amountOfProduct"><span th:text="${product.name}">Milk</span> (grams)</label>
                         <span class="mdl-textfield__error">Input is not a number!</span>
+                        <input name="productName" value="Milk or Something" th:value="${product.name}" type="hidden"/>
                     </div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" name="amountOfEgg" />
-                        <label class="mdl-textfield__label" for="amountOfEgg">Egg (grams)</label>
-                        <span class="mdl-textfield__error">Input is not a number!</span>
-                    </div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" name="amountOfCereal" />
-                        <label class="mdl-textfield__label" for="amountOfCereal">Cereal (grams)</label>
-                        <span class="mdl-textfield__error">Input is not a number!</span>
-                    </div>
+
             <div class="mdl-card__actions mdl-card--border">
                 <button type="submit" class="mdl-button mdl-button--colored">GO</button>
             </div>
 
-
-                    <input type="hidden" name="name" value="milk"/><input name="amount"/>
-                    <input type="hidden" name="name" value="eggs"/><input name="amount"/>
-                    <input type="hidden" name="name" value="wodka"/><input name="amount"/>
-                    <input type="hidden" name="name" value="kakao"/><input name="amount"/>
-                    <input type="hidden" name="name" value="milk"/><input name="amount"/>
-                    <input type="hidden" name="name" value="milk"/><input name="amount"/>
 
                 </form>
             </div>
