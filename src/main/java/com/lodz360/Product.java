@@ -32,5 +32,18 @@ public class Product  {
 
     public String getName() {return name; }
 
+
     public String toString() {return getName() + " conteins: " + getProtain() + "grams of protain " + getFat() + "grams of fat "+getCarbohydrates()+"grams of carbohydrates.";}
-}
+
+
+ /*   @Override
+    public boolean equals(Object obj) {
+        Product pro = (Product) obj;
+        if (pro.name.equals(this.name)) {
+            return true;
+        }*/
+    }
+
+
+
+

@@ -4,11 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by michalina on 10/08/16.
@@ -16,42 +13,60 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    List<User> usersList = new ArrayList<>();
+    /*List<User> usersList = new ArrayList<>();*/
     private ProductRepository productRepository;
+    private UserRepository userRepository;
 
     @Autowired
     public UserController(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
+    @Autowired
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @RequestMapping("/")
-    public String form() {
+    public String form(Model, model) {
+        model.addAttribute("user", userRepository.getUser());
         return "signin";
     }
 
-
     @RequestMapping("/signin")
-    public String user(@RequestParam(value = "name") String name,
+ /*   public String user(@RequestParam(value = "name") String name,
                        @RequestParam(value = "age") Integer age,
                        @RequestParam(value = "weight") Integer weight,
                        @RequestParam(value = "height") Integer height, Model model) {
 
 
         User user = new User(name, age, weight, height);
-        usersList.add(user);
+        usersList.add(user);*/
 
-        model.addAttribute("user", user);
-        try {
-            model.addAttribute("checkbmi", user.checkbmi());
-        } catch (BMIToLowException toLow) {
-            model.addAttribute("checkbmi", "Wpisałeś głupoty, albo jesteś tak chudy, że już nic Ci nie pomoże");
-        } catch (BMIToHighException toHigh) {
-            model.addAttribute("checkbmi", "Za duże BMI");
-        } catch (BMIException e) {
-            e.printStackTrace();
-        }
-        return "result";
+
+            model.addAttribute("user",user)
+        try
+
+    {
+        model.addAttribute("checkbmi", user.checkbmi());
+    } catch(
+    BMIToLowException toLow)
+
+    {
+        model.addAttribute("checkbmi", "Wpisałeś głupoty, albo jesteś tak chudy, że już nic Ci nie pomoże");
+    } catch(
+    BMIToHighException toHigh)
+
+    {
+        model.addAttribute("checkbmi", "Za duże BMI");
+    } catch(
+    BMIException e)
+
+    {
+        e.printStackTrace();
     }
+        return"result"
+}
 
     @RequestMapping("/main")
     public String form1(Model model) {
@@ -67,13 +82,13 @@ public class UserController {
         double countFatInProductYouAte = 0;
         double countCarbohydratesInProductYouAte = 0;
 
-        for (Product product: productRepository.getAllProducts()) {
+        for (Product product : productRepository.getAllProducts()) {
             String parameterName = "amountOf" + product.getName();
             String parameterValue = request.getParameter(parameterName);
             if (parameterValue != null && !parameterValue.equals("")) {
                 double amountOfProduct = Double.parseDouble(parameterValue);
                 countProteinInProductYouAte += (product.getProtain() * amountOfProduct);
-                countFatInProductYouAte += (product.getFat() *  amountOfProduct);
+                countFatInProductYouAte += (product.getFat() * amountOfProduct);
                 countCarbohydratesInProductYouAte += (product.getCarbohydrates() * amountOfProduct);
             }
 

@@ -10,7 +10,8 @@ import java.util.List;
  * Created by michalina on 11/08/16.
  */
 @Component
-public class ProductDAO implements ProductRepository {
+public class InMemoryProductRepository implements ProductRepository {
+
 
 
     @Override
@@ -21,6 +22,7 @@ public class ProductDAO implements ProductRepository {
         productList.add(new Product("Egg", 13, 11, 0));
         productList.add(new Product("Cereal", 8, 0.4, 84));
         productList.add(new Product("Butter", 0.9, 89, 0.1));
+        productList.add(new Product("Baton", 10, 0.8, 0.1));
         return productList;
     }
 
