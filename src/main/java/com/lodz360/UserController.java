@@ -34,6 +34,7 @@ public class UserController {
     }
 
     @RequestMapping("/signin")
+    public String getUser() {
  /*   public String user(@RequestParam(value = "name") String name,
                        @RequestParam(value = "age") Integer age,
                        @RequestParam(value = "weight") Integer weight,
@@ -41,31 +42,33 @@ public class UserController {
 
 
         User user = new User(name, age, weight, height);
-        usersList.add(user);*/
+        usersList.add(user);
 
 
-            model.addAttribute("user",user)
+            model.addAttribute("user",user) */
         try
 
-    {
-        model.addAttribute("checkbmi", user.checkbmi());
-    } catch(
-    BMIToLowException toLow)
+        {
+            model.addAttribute("checkbmi", user.checkbmi());
+        } catch (
+                BMIToLowException toLow)
 
-    {
-        model.addAttribute("checkbmi", "Wpisałeś głupoty, albo jesteś tak chudy, że już nic Ci nie pomoże");
-    } catch(
-    BMIToHighException toHigh)
+        {
+            model.addAttribute("checkbmi", "Wpisałeś głupoty, albo jesteś tak chudy, że już nic Ci nie pomoże");
+        } catch (
+                BMIToHighException toHigh)
 
-    {
-        model.addAttribute("checkbmi", "Za duże BMI");
-    } catch(
-    BMIException e)
+        {
+            model.addAttribute("checkbmi", "Za duże BMI");
+        } catch (
+                BMIException e)
 
-    {
-        e.printStackTrace();
+        {
+            e.printStackTrace();
+        }
+        return "result"
     }
-        return"result"
+
 }
 
     @RequestMapping("/main")
