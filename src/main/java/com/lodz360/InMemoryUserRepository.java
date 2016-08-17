@@ -14,16 +14,19 @@ public class InMemoryUserRepository implements UserRepository {
     List<User> usersList = new ArrayList<>();
 
     @Override
-    public List<User> addUser(User user) {
-
+    public void addUser(User user) {
         usersList.add(user);
-        return usersList;
-
     }
 
     @Override
     public List<User> getAllUsers() {
         return usersList;
     }
+
+    @Override
+    public User getUserByName(String userName) {
+        return null;
+    }
+
 
 }

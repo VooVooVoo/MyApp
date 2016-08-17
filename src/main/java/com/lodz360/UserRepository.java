@@ -8,7 +8,9 @@ import java.util.List;
 public interface UserRepository {
 
 
-    List<User> addUser(User user);
+    void addUser(User user);
 
     List<User> getAllUsers();
+
+    User getUserByName(String userName);
 }

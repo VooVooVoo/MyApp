@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+
 
 /**
  * Created by michalina on 10/08/16.
@@ -38,6 +41,31 @@ public class UserController {
         return null;
     }
 */
+    @RequestMapping("/main2")
+    public String form2() {
+        return "login";
+    }
+
+    @RequestMapping("/login")
+    public String user(@RequestParam(value = "name") String name,
+                       @RequestParam(value = "password", required = false) Integer password,
+                       HttpServletRequest request,
+                       Model model) {
+
+        String userName=request.getParameter("name");
+
+        User user  = userRepository.getUserByName(userName);
+
+
+          if (user != null ){
+              HttpSession session = request.getSession();
+              session.setAttribute("juzer", user);
+          } else {  return "redirect:/login";
+
+          }
+
+          return "redirect:/main";
+      }
 
 
     @RequestMapping("/")
@@ -50,15 +78,35 @@ public class UserController {
     public String user(@RequestParam(value = "name") String name,
                        @RequestParam(value = "age") Integer age,
                        @RequestParam(value = "weight") Integer weight,
-                       @RequestParam(value = "height") Integer height, Model model) {
+                       @RequestParam(value = "height") Integer height,
+                       HttpServletRequest request,
+                       Model model) {
+
+        HttpSession session = request.getSession();
+
 
         User user = new User(name, age, weight, height);
+
+        session.setAttribute("juzek", user);
+
         userRepository.addUser(user);
+        return "redirect:/bmi";
+    }
 
 
-        model.addAttribute("user", user);
+
+        @RequestMapping("/bmi")
+        public String form(Model model, HttpServletRequest request){
+
+        HttpSession session = request.getSession();
+        User juzek = (User) session.getAttribute("juzek");
+        if(juzek == null) {
+        return "redirect:/login";
+        }
+
+        model.addAttribute("user", juzek);
         try {
-            model.addAttribute("checkbmi", user.checkbmi());
+            model.addAttribute("checkbmi", juzek.checkbmi());
         } catch (BMIToLowException toLow) {
             model.addAttribute("checkbmi", "Wpisałeś głupoty, albo jesteś tak chudy, że już nic Ci nie pomoże");
         } catch (BMIToHighException toHigh) {
@@ -71,7 +119,14 @@ public class UserController {
     }
 
     @RequestMapping("/main")
-    public String form1(Model model) {
+    public String form1(Model model, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        User juzek = (User) session.getAttribute("juzek");
+        if(juzek == null) {
+            return "redirect:/";
+        }
+
         model.addAttribute("products", productRepository.getAllProducts());
         return "breakfast";
     }
