@@ -9,4 +9,6 @@ public interface UserRepository {
 
 
     List<User> addUser(User user);
+
+    List<User> getAllUsers();
 }

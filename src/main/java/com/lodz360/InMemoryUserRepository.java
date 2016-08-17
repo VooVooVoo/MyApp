@@ -15,10 +15,15 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> addUser(User user) {
-        List<User> allUsers = usersList;
-        allUsers.add(user);
-        return allUsers;
 
+        usersList.add(user);
+        return usersList;
+
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return usersList;
     }
 
 }

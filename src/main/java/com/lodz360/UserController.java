@@ -56,7 +56,6 @@ public class UserController {
         /*userRepository.addUser(user);*/
 
 
-
         model.addAttribute("user", user);
         try {
             model.addAttribute("checkbmi", user.checkbmi());
@@ -79,7 +78,7 @@ public class UserController {
 
 
     @RequestMapping("/breakfast")
-    public String breakfast(HttpServletRequest request, Model model) {
+    public String breakfast(HttpServletRequest request, Model model) {  //co tu się dzieje?
 
         double countProteinInProductYouAte = 0;
         double countFatInProductYouAte = 0;
@@ -87,7 +86,7 @@ public class UserController {
 
         for (Product product: productRepository.getAllProducts()) {
             String parameterName = "amountOf" + product.getName();
-            String parameterValue = request.getParameter(parameterName);
+            String parameterValue = request.getParameter(parameterName);  //??
             if (parameterValue != null && !parameterValue.equals("")) {
                 double amountOfProduct = Double.parseDouble(parameterValue);
                 countProteinInProductYouAte += (product.getProtain() * amountOfProduct);
