@@ -53,7 +53,7 @@ public class UserController {
                        @RequestParam(value = "height") Integer height, Model model) {
 
         User user = new User(name, age, weight, height);
-        /*userRepository.addUser(user);*/
+        userRepository.addUser(user);
 
 
         model.addAttribute("user", user);
@@ -66,7 +66,7 @@ public class UserController {
         } catch (BMIException e) {
             e.printStackTrace();
         }
-        model.addAttribute("allUsers", userRepository.addUser(user));
+        model.addAttribute("allUsers", userRepository.getAllUsers());
         return "result";
     }
 
