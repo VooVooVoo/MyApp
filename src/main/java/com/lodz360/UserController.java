@@ -38,8 +38,9 @@ public class UserController {
                        Model model) {
 
         String userName=request.getParameter("name");
+        String userPassword = request.getParameter("password");
 
-        User user  = userRepository.getUserByName(userName);
+        User user  = userRepository.getUserByNameAndPassword(userName, userPassword);
 
 
           if (user != null ){
@@ -118,6 +119,7 @@ public class UserController {
         }
 
         model.addAttribute("products", productRepository.getAllProducts());
+        model.addAttribute("user", juzek);
         return "breakfast";
     }
 
@@ -140,10 +142,16 @@ public class UserController {
             }
 
         }
+        HttpSession session = request.getSession();
+        User juzek = (User) session.getAttribute("juzek");
+        if(juzek == null) {
+            return "redirect:/";
+        }
 
         model.addAttribute("countProteinInProductYouAte", countProteinInProductYouAte);
         model.addAttribute("countFatInProductYouAte", countFatInProductYouAte);
         model.addAttribute("countCarbohydratesInProductYouAte", countCarbohydratesInProductYouAte);
+        model.addAttribute("user",juzek);
         return "result2";
     }
 

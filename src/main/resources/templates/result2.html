@@ -27,6 +27,7 @@
                 <h2 class="mdl-card__title-text">Balance Your Diet</h2>
             </div>
             <div class="mdl-card__supporting-text">
+                <p th:text=" |Hello  ${user.name}|"> You </p>
                 <p th:text=" |Protein: ${#numbers.formatDecimal(countProteinInProductYouAte, 1, 2)}|"> BlaBla </p>
                 <p th:text="|Fat: ${#numbers.formatDecimal(countFatInProductYouAte, 1, 2)}|"> BleBle :) </p>
                 <p th:text="|Carbohydrates: ${#numbers.formatDecimal(countCarbohydratesInProductYouAte, 1, 2)}|"> BloBlo :) </p>
