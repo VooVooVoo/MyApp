@@ -39,6 +39,7 @@ public class MyAppWithSpark {
 
         Spark.get("/signin", (request, response) -> {
             String name = request.queryParams("name");
+            String password = request.queryParams("password");
             String age = request.queryParams("age");
             String weight = request.queryParams("weight");
             String height = request.queryParams("height");
@@ -53,7 +54,7 @@ public class MyAppWithSpark {
 
             float weightflo = Float.parseFloat(weight);
             float heightflo = Float.parseFloat(height);
-            User user = new User(name, ageint, weightflo, heightflo);
+            User user = new User(name, password, ageint, weightflo, heightflo);
 
             usersList.add(user);
           /*  System.out.println(usersList);

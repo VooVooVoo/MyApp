@@ -25,8 +25,12 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public User getUserByName(String userName) {
-        return null;
+        for (User user : getAllUsers()) {
+            if (userName.equals(user.getName()))
+                return user;
+        }
+
+        throw new NoSuchUsertException();
+
     }
-
-
 }

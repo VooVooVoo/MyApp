@@ -5,12 +5,14 @@ package com.lodz360;
  */
 public class User {
     private String name;
+    private String password;
     private int age;
     private float weight;
     private float height;
 
-    public User(String name, int age, float weight, float height) {
+    public User(String name, String password, int age, float weight, float height) {
         this.name = name;
+        this.password = password;
         this.age = age;
         this.weight = weight;
         this.height = height / 100;
@@ -20,6 +22,8 @@ public class User {
     public String toString() {
         return name + " " + " " + age + " " + weight + " " + height;
     }
+
+    public String getPassword() {return password;}
 
     public float getWeight() {return weight;}
 

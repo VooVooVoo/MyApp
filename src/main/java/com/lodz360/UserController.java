@@ -26,29 +26,14 @@ public class UserController {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
     }
-
-/*
-    @RequestMapping("/")
-    public String form3() {
-        return "check";
-    }
-
-    @RequestMapping("/check")
-    public String form4(Model model) {
-        userRepository.addUser(User user);
-        model.addAttribute("allUsers", userRepository.addUser(user));
-
-        return null;
-    }
-*/
-    @RequestMapping("/main2")
+    @RequestMapping("/logowanie")
     public String form2() {
         return "login";
     }
 
     @RequestMapping("/login")
     public String user(@RequestParam(value = "name") String name,
-                       @RequestParam(value = "password", required = false) Integer password,
+                       @RequestParam(value = "password") String password,
                        HttpServletRequest request,
                        Model model) {
 
@@ -64,11 +49,15 @@ public class UserController {
 
           }
 
-          return "redirect:/main";
+          return "redirect:/sniadanie";
       }
 
-
     @RequestMapping("/")
+    public String form3() {
+        return "main";
+    }
+
+    @RequestMapping("/rejestracja")
     public String form() {
         return "signin";
     }
@@ -76,6 +65,7 @@ public class UserController {
 
     @RequestMapping("/signin")
     public String user(@RequestParam(value = "name") String name,
+                       @RequestParam(value = "password")String password,
                        @RequestParam(value = "age") Integer age,
                        @RequestParam(value = "weight") Integer weight,
                        @RequestParam(value = "height") Integer height,
@@ -85,7 +75,7 @@ public class UserController {
         HttpSession session = request.getSession();
 
 
-        User user = new User(name, age, weight, height);
+        User user = new User(name, password, age, weight, height);
 
         session.setAttribute("juzek", user);
 
@@ -118,7 +108,7 @@ public class UserController {
         return "result";
     }
 
-    @RequestMapping("/main")
+    @RequestMapping("/sniadanie")
     public String form1(Model model, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
