@@ -15,4 +15,6 @@ public interface ProductRepository {
      @return Product with given name. If not found exception of thrown.
      */
     Product getProductByName(String productName) throws NoSuchProductException;
+
+    List<Product> dodaj(Product product);
 }

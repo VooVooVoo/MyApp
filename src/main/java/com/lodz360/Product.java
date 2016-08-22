@@ -18,6 +18,8 @@ public class Product  {
         this.carbohydrates = carbohydrates / 100;
     }
 
+
+
     public double getProtain() {
         return this.protain;
     }

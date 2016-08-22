@@ -1,5 +1,6 @@
 package com.lodz360;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 /**
@@ -26,29 +28,48 @@ public class UserController {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
     }
+
+    @RequestMapping("/dodawanie")
+    public String form4() {return "addnew";}
+
+    @RequestMapping("/addnew")
+    public String product (@RequestParam(value = "name")String name,
+                           @RequestParam(value = "protein")Integer protein,
+                           @RequestParam(value = "fat") Integer fat,
+                           @RequestParam(value = "carbohydrates") Integer carbohydrates,
+                           HttpServletRequest request,
+                           Model model){
+        HttpSession session = request.getSession();
+        User juzek = (User) session.getAttribute("juzek");
+        if(juzek == null) {
+            return "redirect:/";
+        }
+        Product product = new Product(name, protein,fat,carbohydrates);
+        productRepository.dodaj(product);
+        return "redirect:/sniadanie";
+    }
+
     @RequestMapping("/logowanie")
-    public String form2() {
+    public String form2(@RequestParam(value = "error") String error,
+                        Model model) {
+        model.addAttribute("error", error);
         return "login";
     }
 
     @RequestMapping("/login")
-    public String user(@RequestParam(value = "name") String name,
+    public String login(@RequestParam(value = "name") String name,
                        @RequestParam(value = "password") String password,
-                       HttpServletRequest request,
-                       Model model) {
-
-        String userName=request.getParameter("name");
-        String userPassword = request.getParameter("password");
-
-        User user  = userRepository.getUserByNameAndPassword(userName, userPassword);
+                       HttpServletRequest request) {
 
 
-          if (user != null ){
-              HttpSession session = request.getSession();
-              session.setAttribute("juzer", user);
-          } else {  return "redirect:/login";
-
-          }
+        try {
+            User user = userRepository.getUserByNameAndPassword(name, password);
+            HttpSession session = request.getSession();
+            session.setAttribute("juzek",user);
+        } catch (NoSuchUsertException e){
+            String errorMessage = encode("Nie ma usera!");
+            return "redirect:/logowanie?error="+errorMessage;
+        }
 
           return "redirect:/sniadanie";
       }
@@ -70,10 +91,10 @@ public class UserController {
                        @RequestParam(value = "age") Integer age,
                        @RequestParam(value = "weight") Integer weight,
                        @RequestParam(value = "height") Integer height,
-                       HttpServletRequest request,
-                       Model model) {
+                       HttpServletRequest request) {
 
         HttpSession session = request.getSession();
+
 
 
         User user = new User(name, password, age, weight, height);
@@ -125,11 +146,14 @@ public class UserController {
 
 
     @RequestMapping("/breakfast")
-    public String breakfast(HttpServletRequest request, Model model) {  //co tu się dzieje?
+    public String breakfast(HttpServletRequest request, Model model) {
+
 
         double countProteinInProductYouAte = 0;
         double countFatInProductYouAte = 0;
         double countCarbohydratesInProductYouAte = 0;
+
+
 
         for (Product product: productRepository.getAllProducts()) {
             String parameterName = "amountOf" + product.getName();
@@ -155,9 +179,13 @@ public class UserController {
         return "result2";
     }
 
-    /*private Product getProductByName(String productName) throws NoSuchProductException {
-        return productRepository.getProductByName(productName);
-    }*/
+    private String encode(String text){
+     try{
+         return URLEncoder.encode(text, "UTF-8");
+     }catch(UnsupportedEncodingException e){
+         throw new RuntimeException(e);
+        }
+    }
 
 }
 

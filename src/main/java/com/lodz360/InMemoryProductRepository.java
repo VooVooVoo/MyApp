@@ -13,18 +13,24 @@ import java.util.List;
 public class InMemoryProductRepository implements ProductRepository {
 
 
-
-    @Override
-    public List<Product> getAllProducts() {
-        List<Product> productList = new ArrayList<>();
-
+    List<Product> productList = new ArrayList<>();
+    public InMemoryProductRepository(){
         productList.add(new Product("Milk", 3.4, 3, 0));
         productList.add(new Product("Egg", 13, 11, 0));
         productList.add(new Product("Cereal", 8, 0.4, 84));
         productList.add(new Product("Butter", 0.9, 89, 0.1));
         productList.add(new Product("Baton", 10, 0.8, 0.1));
+
+    }
+
+
+    @Override
+    public List<Product> getAllProducts() {
+
         return productList;
     }
+
+
 
     @Override
     public Product getProductByName(String productName)  {
@@ -34,5 +40,11 @@ public class InMemoryProductRepository implements ProductRepository {
                 return product;
         }
         throw new NoSuchProductException();
+    }
+
+    @Override
+    public List<Product> dodaj(Product product) {
+        productList.add(product);
+        return null;
     }
 }
