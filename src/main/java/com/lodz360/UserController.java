@@ -29,6 +29,10 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    @RequestMapping("/meals")
+    public String meals() {return "meals";}
+
+
     @RequestMapping("/dodawanie")
     public String form4() {return "addnew";}
 
@@ -36,21 +40,15 @@ public class UserController {
     public String product (@RequestParam(value = "name")String name,
                            @RequestParam(value = "protein")Integer protein,
                            @RequestParam(value = "fat") Integer fat,
-                           @RequestParam(value = "carbohydrates") Integer carbohydrates,
-                           HttpServletRequest request,
-                           Model model){
-        HttpSession session = request.getSession();
-        User juzek = (User) session.getAttribute("juzek");
-        if(juzek == null) {
-            return "redirect:/";
-        }
+                           @RequestParam(value = "carbohydrates") Integer carbohydrates){
+
         Product product = new Product(name, protein,fat,carbohydrates);
         productRepository.dodaj(product);
         return "redirect:/sniadanie";
     }
 
     @RequestMapping("/logowanie")
-    public String form2(@RequestParam(value = "error") String error,
+    public String form2(@RequestParam(value = "error",required = false) String error,
                         Model model) {
         model.addAttribute("error", error);
         return "login";
@@ -67,7 +65,7 @@ public class UserController {
             HttpSession session = request.getSession();
             session.setAttribute("juzek",user);
         } catch (NoSuchUsertException e){
-            String errorMessage = encode("Nie ma usera!");
+            String errorMessage = encode("Sign up, no user like that!");
             return "redirect:/logowanie?error="+errorMessage;
         }
 
