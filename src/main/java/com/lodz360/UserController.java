@@ -92,7 +92,7 @@ public class UserController {
         HttpSession session = request.getSession();
         User juzek = (User) session.getAttribute("juzek");
         if(juzek == null) {
-        return "redirect:/login";
+        return "redirect:/logowanie";
         }
 
         model.addAttribute("user", juzek);
