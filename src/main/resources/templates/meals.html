@@ -1,5 +1,4 @@
 
-
 <!doctype html>
 <html lang="en-us">
 <head>
@@ -20,6 +19,22 @@
             padding: 24px;
             flex: none;
         }
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a:active {
+            text-decoration: underline;
+        }
+        }
     </style>
 </head>
 <body>
@@ -31,22 +46,22 @@
                 <h2 class="mdl-card__title-text">Balance Your Diet</h2>
             </div>
             <div class="mdl-card__supporting-text"><h4>Choose a meal</h4>
-                <form action="/meals">
 
 
-                    <ul class="mdl-textfield mdl-js-textfield">
-                        <li class="mdl-textfield__label" for="breakfast"><a href="/sniadanie">Breakfast</a></li>
 
-                        <li class="mdl-textfield__label" for="lunch"><a href="/lunch">Lunch</a></li>
+                <ul class="mdl-list">
+                    <li class="mdl-list__item"><a href="/sniadanie">Breakfast</a></li>
 
-                        <li class="mdl-textfield__label" for="dinner"><a href="/dinner">Dinner</a></li>
+                    <li class="mdl-list__item"><a href="/lunch">Lunch</a></li>
 
-                        <li class="mdl-textfield__label" for="snack"><a href="/snack">Snack</a></li>
+                    <li class="mdl-list__item"><a href="/dinner">Dinner</a></li>
 
-                        <li class="mdl-textfield__label" for="supper"><a href="/supper">Supper</a></li>
-                    </ul>
+                    <li class="mdl-list__item"><a href="/snack">Snack</a></li>
 
-                </form>
+                    <li class="mdl-list__item"><a href="/supper">Supper</a></li>
+                </ul>
+
+
             </div>
         </div>
     </main>
