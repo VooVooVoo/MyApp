@@ -65,7 +65,7 @@ public class UserController {
             HttpSession session = request.getSession();
             session.setAttribute("juzek",user);
         } catch (NoSuchUsertException e){
-            String errorMessage = encode("Sign up, no user like that!");
+            String errorMessage = encode("Login and password are incorrect!");
             return "redirect:/logowanie?error="+errorMessage;
         }
 
