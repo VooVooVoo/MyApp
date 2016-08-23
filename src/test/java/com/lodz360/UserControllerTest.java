@@ -85,7 +85,9 @@ public class UserControllerTest {
         when(request.getParameter("amountOfMilk")).thenReturn("1");
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
+/*
         when(session.getAttribute("juzek")).thenReturn(user);
+*/
 
         when(sessionHelper.isUserLoggedIn(request)).thenReturn(true);
 

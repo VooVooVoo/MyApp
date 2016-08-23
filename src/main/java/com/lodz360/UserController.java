@@ -158,7 +158,7 @@ public class UserController {
 
         for (Product product: productRepository.getAllProducts()) {
             String parameterName = "amountOf" + product.getName();
-            String parameterValue = request.getParameter(parameterName);  //??
+            String parameterValue = request.getParameter(parameterName);
             if (parameterValue != null && !parameterValue.equals("")) {
                 double amountOfProduct = Double.parseDouble(parameterValue);
                 countProteinInProductYouAte += (product.getProtein() * amountOfProduct);
@@ -174,7 +174,9 @@ public class UserController {
             return "redirect:/";
         }
 */
-
+ if(sessionHelper.isUserLoggedIn(request)==false ){
+     return "redirect:/";
+ }
 
         model.addAttribute("countProteinInProductYouAte", countProteinInProductYouAte);
         model.addAttribute("countFatInProductYouAte", countFatInProductYouAte);
