@@ -42,9 +42,13 @@ public class UserController {
 
     @RequestMapping("/addnew")
     public String product (@RequestParam(value = "name")String name,
-                           @RequestParam(value = "protein")Integer protein,
-                           @RequestParam(value = "fat") Integer fat,
-                           @RequestParam(value = "carbohydrates") Integer carbohydrates){
+                           @RequestParam(value = "protein")Double protein,
+                           @RequestParam(value = "fat") Double fat,
+                           @RequestParam(value = "carbohydrates") Double carbohydrates,HttpServletRequest request){
+
+        if(sessionHelper.isUserLoggedIn(request)==false ){
+            return "redirect:/";
+        }
 
         Product product = productFactory.create(name, protein, fat, carbohydrates);
         productRepository.dodaj(product);
@@ -111,15 +115,13 @@ public class UserController {
 
 
 
-        HttpSession session = request.getSession();
-        User juzek = (User) session.getAttribute("juzek");
-        if(juzek == null) {
-        return "redirect:/logowanie";
-        }
+            if(sessionHelper.isUserLoggedIn(request)==false ){
+                return "redirect:/";
+            }
 
-        model.addAttribute("user", juzek);
+        model.addAttribute("user", sessionHelper.returnUser(request));
         try {
-            model.addAttribute("checkbmi", juzek.checkbmi());
+            model.addAttribute("checkbmi", sessionHelper.returnUser(request).checkbmi());
         } catch (BMIToLowException toLow) {
             model.addAttribute("checkbmi", "Wpisałeś głupoty, albo jesteś tak chudy, że już nic Ci nie pomoże");
         } catch (BMIToHighException toHigh) {
@@ -134,14 +136,13 @@ public class UserController {
     @RequestMapping("/sniadanie")
     public String form1(Model model, HttpServletRequest request) {
 
-        HttpSession session = request.getSession();
-        User juzek = (User) session.getAttribute("juzek");
-        if(juzek == null) {
+        if(sessionHelper.isUserLoggedIn(request)==false ){
             return "redirect:/";
         }
 
+
         model.addAttribute("products", productRepository.getAllProducts());
-        model.addAttribute("user", juzek);
+        model.addAttribute("user", sessionHelper.returnUser(request));
         return "breakfast";
     }
 
@@ -167,13 +168,7 @@ public class UserController {
             }
 
         }
-        /*HttpSession session = request.getSession();
-        User juzek = (User) session.getAttribute("juzek");
-        sessionHelper.isUserLoggedIn(request);
-        if(juzek == null) {
-            return "redirect:/";
-        }
-*/
+
  if(sessionHelper.isUserLoggedIn(request)==false ){
      return "redirect:/";
  }
@@ -181,9 +176,7 @@ public class UserController {
         model.addAttribute("countProteinInProductYouAte", countProteinInProductYouAte);
         model.addAttribute("countFatInProductYouAte", countFatInProductYouAte);
         model.addAttribute("countCarbohydratesInProductYouAte", countCarbohydratesInProductYouAte);
-/*
-        model.addAttribute("user",juzek);
-*/
+        model.addAttribute("user",sessionHelper.returnUser(request));
         return "result2";
     }
 

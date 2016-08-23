@@ -54,9 +54,12 @@ public class UserControllerTest {
         User user = mock(User.class);
         when(productFactory.create("Milk", 1.0, 2.0, 3.0)).thenReturn(product);
         UserController userController = new UserController(productRepository, userRepository, productFactory,sessionHelper);
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(sessionHelper.isUserLoggedIn(request)).thenReturn(true);
+
 
         //When
-        userController.product("Milk",1,2,3);
+        userController.product("Milk",1.0,2.0,3.0, request);
         //Then
 
         verify(productRepository).dodaj(product);
@@ -84,10 +87,6 @@ public class UserControllerTest {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getParameter("amountOfMilk")).thenReturn("1");
         HttpSession session = mock(HttpSession.class);
-        when(request.getSession()).thenReturn(session);
-/*
-        when(session.getAttribute("juzek")).thenReturn(user);
-*/
 
         when(sessionHelper.isUserLoggedIn(request)).thenReturn(true);
 
@@ -104,7 +103,7 @@ public class UserControllerTest {
 
     }
     @Test
-   public void should(){
+   public void shouldCheckIfReturnedUserIsLoggedInUser(){
        //Given
        ProductRepository productRepository = mock(ProductRepository.class);
        ProductFactory productFactory = mock(ProductFactory.class);
@@ -114,10 +113,12 @@ public class UserControllerTest {
        UserController userController1 = new UserController(productRepository,userController,productFactory,sessionHelper);
         HttpServletRequest request = mock(HttpServletRequest.class);
        Model model = mock(Model.class);
-       HttpSession session = mock(HttpSession.class);
        User user = new User("","",0,0,0);
-       when(request.getSession()).thenReturn(session);
-       when(session.getAttribute("juzek")).thenReturn(user);
+        when(sessionHelper.isUserLoggedIn(request)).thenReturn(true);
+        when(sessionHelper.returnUser(request)).thenReturn(user);
+/*
+        when(session.getAttribute("juzek")).thenReturn(user);
+*/
        //When
        userController1.form1(model, request);
        //Then

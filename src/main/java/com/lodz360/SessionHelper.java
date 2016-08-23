@@ -1,5 +1,7 @@
 package com.lodz360;
 
+import org.omg.CORBA.Object;
+import org.springframework.asm.Attribute;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,5 +20,13 @@ public class SessionHelper {
         } else {
             return true;
         }
+    }
+    public User returnUser(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User juzek = (User) session.getAttribute("juzek");
+        if (juzek != null) {
+            return juzek;
+        }
+throw new NoSuchUsertException();
     }
 }
