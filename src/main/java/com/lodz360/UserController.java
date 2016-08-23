@@ -23,12 +23,14 @@ public class UserController {
     private ProductRepository productRepository;
     private UserRepository userRepository;
     private ProductFactory productFactory;
+    private SessionHelper sessionHelper;
 
     @Autowired
-    public UserController(ProductRepository productRepository, UserRepository userRepository, ProductFactory productFactory) {
+    public UserController(ProductRepository productRepository, UserRepository userRepository, ProductFactory productFactory,SessionHelper sessionHelper) {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.productFactory = productFactory;
+        this.sessionHelper = sessionHelper;
     }
 
     @RequestMapping("/meals")
@@ -81,11 +83,11 @@ public class UserController {
 
     @RequestMapping("/rejestracja")
     public String form() {
-        return "signin";
+        return "signup";
     }
 
 
-    @RequestMapping("/signin")
+    @RequestMapping("/signup")
     public String user(@RequestParam(value = "name") String name,
                        @RequestParam(value = "password")String password,
                        @RequestParam(value = "age") Integer age,
@@ -93,12 +95,9 @@ public class UserController {
                        @RequestParam(value = "height") Integer height,
                        HttpServletRequest request) {
 
-        HttpSession session = request.getSession();
-
-
-
         User user = new User(name, password, age, weight, height);
 
+        HttpSession session = request.getSession();
         session.setAttribute("juzek", user);
 
         userRepository.addUser(user);
@@ -109,6 +108,8 @@ public class UserController {
 
         @RequestMapping("/bmi")
         public String form(Model model, HttpServletRequest request){
+
+
 
         HttpSession session = request.getSession();
         User juzek = (User) session.getAttribute("juzek");
@@ -160,22 +161,27 @@ public class UserController {
             String parameterValue = request.getParameter(parameterName);  //??
             if (parameterValue != null && !parameterValue.equals("")) {
                 double amountOfProduct = Double.parseDouble(parameterValue);
-                countProteinInProductYouAte += (product.getProtain() * amountOfProduct);
+                countProteinInProductYouAte += (product.getProtein() * amountOfProduct);
                 countFatInProductYouAte += (product.getFat() *  amountOfProduct);
                 countCarbohydratesInProductYouAte += (product.getCarbohydrates() * amountOfProduct);
             }
 
         }
-        HttpSession session = request.getSession();
+        /*HttpSession session = request.getSession();
         User juzek = (User) session.getAttribute("juzek");
+        sessionHelper.isUserLoggedIn(request);
         if(juzek == null) {
             return "redirect:/";
         }
+*/
+
 
         model.addAttribute("countProteinInProductYouAte", countProteinInProductYouAte);
         model.addAttribute("countFatInProductYouAte", countFatInProductYouAte);
         model.addAttribute("countCarbohydratesInProductYouAte", countCarbohydratesInProductYouAte);
+/*
         model.addAttribute("user",juzek);
+*/
         return "result2";
     }
 

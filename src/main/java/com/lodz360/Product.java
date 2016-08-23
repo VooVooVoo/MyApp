@@ -6,22 +6,22 @@ package com.lodz360;
  */
 public class Product  {
     private String name;
-    private double protain;
+    private double protein;
     private double fat;
     private double carbohydrates;
 
-    public Product(String name, double protain, double fat, double carbohydrates) {
+    public Product(String name, double protein, double fat, double carbohydrates) {
 
         this.name = name;
-        this.protain = protain / 100;
+        this.protein = protein / 100;
         this.fat = fat / 100;
         this.carbohydrates = carbohydrates / 100;
     }
 
 
 
-    public double getProtain() {
-        return this.protain;
+    public double getProtein() {
+        return this.protein;
     }
 
     public double getFat() {
@@ -35,7 +35,7 @@ public class Product  {
     public String getName() {return name; }
 
 
-    public String toString() {return getName() + " conteins: " + getProtain() + "grams of protain " + getFat() + "grams of fat "+getCarbohydrates()+"grams of carbohydrates.";}
+    public String toString() {return getName() + " contain: " + getProtein() + "grams of protein " + getFat() + "grams of fat "+getCarbohydrates()+"grams of carbohydrates.";}
 
 
  /*   @Override
