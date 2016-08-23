@@ -22,11 +22,13 @@ public class UserController {
 
     private ProductRepository productRepository;
     private UserRepository userRepository;
+    private ProductFactory productFactory;
 
     @Autowired
-    public UserController(ProductRepository productRepository, UserRepository userRepository) {
+    public UserController(ProductRepository productRepository, UserRepository userRepository, ProductFactory productFactory) {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.productFactory = productFactory;
     }
 
     @RequestMapping("/meals")
@@ -42,7 +44,7 @@ public class UserController {
                            @RequestParam(value = "fat") Integer fat,
                            @RequestParam(value = "carbohydrates") Integer carbohydrates){
 
-        Product product = new Product(name, protein,fat,carbohydrates);
+        Product product = productFactory.create(name, protein, fat, carbohydrates);
         productRepository.dodaj(product);
         return "redirect:/sniadanie";
     }
