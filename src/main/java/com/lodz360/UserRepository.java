@@ -13,4 +13,5 @@ public interface UserRepository {
     List<User> getAllUsers();
 
     User getUserByNameAndPassword(String userName, String userPassword) throws NoSuchUsertException;
+
 }

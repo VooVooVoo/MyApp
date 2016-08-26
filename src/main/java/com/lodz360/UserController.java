@@ -98,13 +98,15 @@ public class UserController {
                        @RequestParam(value = "weight") Integer weight,
                        @RequestParam(value = "height") Integer height,
                        HttpServletRequest request) {
+            User user = new User(name, password, age, weight, height);
+                HttpSession session = request.getSession();
+                session.setAttribute("juzek", user);
+                try{
+                userRepository.addUser(user);}
+            catch (NoUniqueUserName e){
+                String errorMessage = encode("Login has already been used!");
+                return "redirect:/rejestracja?error="+errorMessage;}
 
-        User user = new User(name, password, age, weight, height);
-
-        HttpSession session = request.getSession();
-        session.setAttribute("juzek", user);
-
-        userRepository.addUser(user);
         return "redirect:/bmi";
     }
 

@@ -27,13 +27,9 @@ public class MyAppWithSpark {
             int eggsgram = Integer.parseInt(eggs);
             int cerealgrams = Integer.parseInt(cereal);
 
-          /*  Breakfast breakfast = new Breakfast(milkgram, eggsgram, cerealgrams);*/
 
             Map<String, Object> model = new HashMap();
-/*
-            model.put("userListAsString", );
-*/
-            return new ModelAndView (model,"result2.ftl");
+       return new ModelAndView (model,"result2.ftl");
         }, new FreeMarkerEngine());
 
 
@@ -57,8 +53,7 @@ public class MyAppWithSpark {
             User user = new User(name, password, ageint, weightflo, heightflo);
 
             usersList.add(user);
-          /*  System.out.println(usersList);
-            System.out.println(usersList.size());*/
+
 
             Map<String, Object> model = new HashMap();
             model.put("user", user);

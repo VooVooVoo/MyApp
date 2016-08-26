@@ -1,7 +1,5 @@
 package com.lodz360;
 
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +7,6 @@ import java.util.List;
 /**
  * Created by michalina on 11/08/16.
  */
-@Component
 public class InMemoryProductRepository implements ProductRepository {
 
 
@@ -43,8 +40,7 @@ public class InMemoryProductRepository implements ProductRepository {
     }
 
     @Override
-    public List<Product> dodaj(Product product) {
+    public void dodaj(Product product) {
         productList.add(product);
-        return null;
     }
 }

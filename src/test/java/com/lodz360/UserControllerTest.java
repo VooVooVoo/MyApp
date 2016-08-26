@@ -1,19 +1,14 @@
 package com.lodz360;
 
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.registerCustomDateFormat;
 import static org.mockito.Mockito.*;
 
 /**
@@ -35,6 +30,8 @@ public class UserControllerTest {
 
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
+
+
 
         //When
         userController.user("","",0,0,0,request);
@@ -69,10 +66,9 @@ public class UserControllerTest {
         //Given
         ProductRepository productRepository = mock(ProductRepository.class);
         ProductFactory productFactory = mock(ProductFactory.class);
-        UserRepository userController = mock(UserRepository.class);
+        UserRepository userRepository = mock(UserRepository.class);
         SessionHelper sessionHelper = mock(SessionHelper.class);
-        SessionHelper sessionHelper1 = mock(SessionHelper.class);
-        UserController userController1 = new UserController(productRepository,userController,productFactory,sessionHelper);
+        UserController userController1 = new UserController(productRepository,userRepository,productFactory,sessionHelper);
 
 
 
@@ -86,7 +82,6 @@ public class UserControllerTest {
         User user = new User("","",0,0,0);
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getParameter("amountOfMilk")).thenReturn("1");
-        HttpSession session = mock(HttpSession.class);
 
         when(sessionHelper.isUserLoggedIn(request)).thenReturn(true);
 
@@ -107,22 +102,36 @@ public class UserControllerTest {
        //Given
        ProductRepository productRepository = mock(ProductRepository.class);
        ProductFactory productFactory = mock(ProductFactory.class);
-       UserRepository userController = mock(UserRepository.class);
+       UserRepository userRepository = mock(UserRepository.class);
        SessionHelper sessionHelper = mock(SessionHelper.class);
-       SessionHelper sessionHelper1 = mock(SessionHelper.class);
-       UserController userController1 = new UserController(productRepository,userController,productFactory,sessionHelper);
+       UserController userController1 = new UserController(productRepository,userRepository,productFactory,sessionHelper);
         HttpServletRequest request = mock(HttpServletRequest.class);
        Model model = mock(Model.class);
        User user = new User("","",0,0,0);
         when(sessionHelper.isUserLoggedIn(request)).thenReturn(true);
         when(sessionHelper.returnUser(request)).thenReturn(user);
-/*
-        when(session.getAttribute("juzek")).thenReturn(user);
-*/
+
        //When
        userController1.form1(model, request);
        //Then
        verify(model).addAttribute("user", user);
    }
+   /*@Test
+   public void shouldRedirectWhenUserNotLoggedIn(){
+       ProductRepository productRepository = mock(ProductRepository.class);
+       ProductFactory productFactory = mock(ProductFactory.class);
+       UserRepository userRepository = mock(UserRepository.class);
+       SessionHelper sessionHelper = mock(SessionHelper.class);
+       UserController userController = new UserController(productRepository,userRepository,productFactory,sessionHelper);
+        Model model =  mock(Model.class);
+       HttpServletRequest request = mock(HttpServletRequest.class);
+       when(sessionHelper.isUserLoggedIn(request)).thenReturn(true);
+
+       //When
+       userController.form1(model,request);
+
+       //Then
+
+   }*/
 
 }

@@ -16,5 +16,5 @@ public interface ProductRepository {
      */
     Product getProductByName(String productName) throws NoSuchProductException;
 
-    List<Product> dodaj(Product product);
+   void dodaj(Product product);
 }
