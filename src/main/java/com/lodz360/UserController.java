@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import static com.lodz360.NutritionalValue.ZERO;
+
 
 /**
  * Created by michalina on 10/08/16.
@@ -26,7 +28,7 @@ public class UserController {
     private SessionHelper sessionHelper;
 
     @Autowired
-    public UserController(ProductRepository productRepository, UserRepository userRepository, ProductFactory productFactory,SessionHelper sessionHelper) {
+    public UserController(ProductRepository productRepository, UserRepository userRepository, ProductFactory productFactory, SessionHelper sessionHelper) {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.productFactory = productFactory;
@@ -34,19 +36,23 @@ public class UserController {
     }
 
     @RequestMapping("/meals")
-    public String meals() {return "meals";}
+    public String meals() {
+        return "meals";
+    }
 
 
     @RequestMapping("/dodawanie")
-    public String form4() {return "addnew";}
+    public String form4() {
+        return "addnew";
+    }
 
     @RequestMapping("/addnew")
-    public String product (@RequestParam(value = "name")String name,
-                           @RequestParam(value = "protein")Double protein,
-                           @RequestParam(value = "fat") Double fat,
-                           @RequestParam(value = "carbohydrates") Double carbohydrates,HttpServletRequest request){
+    public String product(@RequestParam(value = "name") String name,
+                          @RequestParam(value = "protein") Double protein,
+                          @RequestParam(value = "fat") Double fat,
+                          @RequestParam(value = "carbohydrates") Double carbohydrates, HttpServletRequest request) {
 
-        if(sessionHelper.isUserLoggedIn(request)==false ){
+        if (sessionHelper.isUserLoggedIn(request) == false) {
             return "redirect:/";
         }
 
@@ -56,7 +62,7 @@ public class UserController {
     }
 
     @RequestMapping("/logowanie")
-    public String form2(@RequestParam(value = "error",required = false) String error,
+    public String form2(@RequestParam(value = "error", required = false) String error,
                         Model model) {
         model.addAttribute("error", error);
         return "login";
@@ -64,21 +70,21 @@ public class UserController {
 
     @RequestMapping("/login")
     public String login(@RequestParam(value = "name") String name,
-                       @RequestParam(value = "password") String password,
-                       HttpServletRequest request) {
+                        @RequestParam(value = "password") String password,
+                        HttpServletRequest request) {
 
 
         try {
             User user = userRepository.getUserByNameAndPassword(name, password);
             HttpSession session = request.getSession();
-            session.setAttribute("juzek",user);
-        } catch (NoSuchUsertException e){
+            session.setAttribute("juzek", user);
+        } catch (NoSuchUsertException e) {
             String errorMessage = encode("Login and password are incorrect!");
-            return "redirect:/logowanie?error="+errorMessage;
+            return "redirect:/logowanie?error=" + errorMessage;
         }
 
-          return "redirect:/sniadanie";
-      }
+        return "redirect:/sniadanie";
+    }
 
     @RequestMapping("/")
     public String form3() {
@@ -93,33 +99,32 @@ public class UserController {
 
     @RequestMapping("/signup")
     public String user(@RequestParam(value = "name") String name,
-                       @RequestParam(value = "password")String password,
+                       @RequestParam(value = "password") String password,
                        @RequestParam(value = "age") Integer age,
                        @RequestParam(value = "weight") Integer weight,
                        @RequestParam(value = "height") Integer height,
                        HttpServletRequest request) {
-            User user = new User(name, password, age, weight, height);
-                HttpSession session = request.getSession();
-                session.setAttribute("juzek", user);
-                try{
-                userRepository.addUser(user);}
-            catch (NoUniqueUserName e){
-                String errorMessage = encode("Login has already been used!");
-                return "redirect:/rejestracja?error="+errorMessage;}
+        User user = new User(name, password, age, weight, height);
+        HttpSession session = request.getSession();
+        session.setAttribute("juzek", user);
+        try {
+            userRepository.addUser(user);
+        } catch (NoUniqueUserName e) {
+            String errorMessage = encode("Login has already been used!");
+            return "redirect:/rejestracja?error=" + errorMessage;
+        }
 
         return "redirect:/bmi";
     }
 
 
-
-        @RequestMapping("/bmi")
-        public String form(Model model, HttpServletRequest request){
-
+    @RequestMapping("/bmi")
+    public String form(Model model, HttpServletRequest request) {
 
 
-            if(sessionHelper.isUserLoggedIn(request)==false ){
-                return "redirect:/";
-            }
+        if (sessionHelper.isUserLoggedIn(request) == false) {
+            return "redirect:/";
+        }
 
         model.addAttribute("user", sessionHelper.returnUser(request));
         try {
@@ -138,7 +143,7 @@ public class UserController {
     @RequestMapping("/sniadanie")
     public String form1(Model model, HttpServletRequest request) {
 
-        if(sessionHelper.isUserLoggedIn(request)==false ){
+        if (sessionHelper.isUserLoggedIn(request) == false) {
             return "redirect:/";
         }
 
@@ -152,41 +157,34 @@ public class UserController {
     @RequestMapping("/breakfast")
     public String breakfast(HttpServletRequest request, Model model) {
 
+        NutritionalValue whatYouAte = ZERO;
 
-        double countProteinInProductYouAte = 0;
-        double countFatInProductYouAte = 0;
-        double countCarbohydratesInProductYouAte = 0;
-
-
-
-        for (Product product: productRepository.getAllProducts()) {
+        for (Product product : productRepository.getAllProducts()) {
             String parameterName = "amountOf" + product.getName();
             String parameterValue = request.getParameter(parameterName);
             if (parameterValue != null && !parameterValue.equals("")) {
                 double amountOfProduct = Double.parseDouble(parameterValue);
-                countProteinInProductYouAte += (product.getProtein() * amountOfProduct);
-                countFatInProductYouAte += (product.getFat() *  amountOfProduct);
-                countCarbohydratesInProductYouAte += (product.getCarbohydrates() * amountOfProduct);
+                whatYouAte.addMeal(product, amountOfProduct);
             }
 
         }
 
- if(sessionHelper.isUserLoggedIn(request)==false ){
-     return "redirect:/";
- }
+        if (sessionHelper.isUserLoggedIn(request) == false) {
+            return "redirect:/";
+        }
 
-        model.addAttribute("countProteinInProductYouAte", countProteinInProductYouAte);
-        model.addAttribute("countFatInProductYouAte", countFatInProductYouAte);
-        model.addAttribute("countCarbohydratesInProductYouAte", countCarbohydratesInProductYouAte);
-        model.addAttribute("user",sessionHelper.returnUser(request));
+        model.addAttribute("countProteinInProductYouAte", whatYouAte.getProteinsInGrams());
+        model.addAttribute("countFatInProductYouAte", whatYouAte.getFatInGrams());
+        model.addAttribute("countCarbohydratesInProductYouAte", whatYouAte.getCarbsInGrams());
+        model.addAttribute("user", sessionHelper.returnUser(request));
         return "result2";
     }
 
-    private String encode(String text){
-     try{
-         return URLEncoder.encode(text, "UTF-8");
-     }catch(UnsupportedEncodingException e){
-         throw new RuntimeException(e);
+    private String encode(String text) {
+        try {
+            return URLEncoder.encode(text, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
     }
 
